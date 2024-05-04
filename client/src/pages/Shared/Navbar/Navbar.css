@@ -1,0 +1,53 @@
+/* 
+.header{
+    color:#0d6efd;;
+}
+
+.topic-name:hover{
+    
+    color:#059862;
+}
+h2{
+    font-family: cursive;
+}
+.link{
+    text-decoration: none;
+    list-style-type: none;
+    margin-right: 2.5em;
+}
+
+@media screen and (min-width: 992px) {
+  
+    ul{
+        position:absolute;
+        right: 5px;
+    }
+    .nav-item{
+        margin-left:20px ;
+    }
+  }
+
+.active{
+    font-weight: bold;
+}
+ */
+
+
+.user-img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit : cover ;
+}
+.active{
+  border:1px solid black;
+  background-color: white;
+  color: black;
+}
+/* .night{
+    background-color: black;
+    
+}
+.mood{
+    cursor: pointer;
+} */

@@ -1,0 +1,16 @@
+.login-container{
+    height: 100vh;
+  
+    
+}
+
+.login-content{
+    max-width: 400px;
+    
+}
+.sign-in-option{
+    cursor: pointer;
+}
+.error{
+    color:red;
+}

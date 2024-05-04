@@ -1,0 +1,10 @@
+.main{
+    font-family:'Poppins',sans-serif;
+    /* min-height: 100vh; */
+}
+
+.outlet{
+    /* border:5px solid red; */
+    
+    min-height: 90vh;
+}
