@@ -9,7 +9,32 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    getRoleDetails: builder.query({
+      query: (userId) => {
+        console.log(userId);
+        return {
+          url: `/users/role-details/${userId}`,
+          method: 'GET',
+
+        }
+       
+      },
+    }),
+    getStsManagerRoleDetails: builder.query({
+      query: (userId) => {
+        console.log(userId);
+        return {
+          url: `/sts-manager/role-details/${userId}`,
+          method: 'GET',
+
+        }
+       
+      },
+    })
+
+
+
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useGetRoleDetailsQuery, useGetStsManagerRoleDetailsQuery } = authApi;

@@ -31,8 +31,19 @@ const allUsersApi = baseApi.injectEndpoints({
         }
       },
     }),
+    createLandfill : builder.mutation({
+      query: (body) => {
+        
+        return {
+
+          url: '/create/landfill',
+          method: 'POST',
+          body
+        }
+      },
+    }),
     
   }),
 });
 
-export const { useGetAllUsersQuery,useAssignVehicleToStsMutation } = allUsersApi;
+export const { useGetAllUsersQuery,useAssignVehicleToStsMutation, useCreateLandfillMutation } = allUsersApi;

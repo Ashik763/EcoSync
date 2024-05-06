@@ -1,6 +1,8 @@
 // import { useState } from "react";
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useCurrentToken } from "../../Redux/features/auth/authSlice";
 
 // import { AiFillGithub } from "react-icons/ai";
 // import { AiOutlineGoogle } from "react-icons/ai";
@@ -10,6 +12,7 @@ const CreateVehicle = () => {
   // const [error, setError] = useState("");
   const [vehicleType, setVehicleType] = useState("open_truck");
   const [capacity, setCapacity] = useState("3");
+  const token = useSelector(useCurrentToken);
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -35,7 +38,7 @@ const CreateVehicle = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `${localStorage.getItem("token")}`,
+        authorization: token,
       },
       body: JSON.stringify(body),
     })

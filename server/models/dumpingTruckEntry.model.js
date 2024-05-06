@@ -1,7 +1,18 @@
 const mongoose = require("mongoose");
 
 const dumpingTruckEntrySchema = mongoose.Schema({
-  volume_of_waste: {
+  landfill_id: {
+    // ward_no.
+    type: Number,
+    required: true,
+  },
+  vehicle_number: {
+    type: Number,
+    unique: true,
+    required: true,
+  },
+
+  weight_of_waste: {
     type: Number,
     required: true,
   },

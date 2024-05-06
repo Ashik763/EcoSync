@@ -1,10 +1,9 @@
 import { useState } from "react";
 // import ReactSpinner from 'react-bootstrap-spinner'
 import "./Login.css";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthProvider";
-import { getUserInfo, updateFirstTimeLogin } from "../../utilities/getUserInfo";
-import { useLoginMutation } from "../../Redux/features/auth/authApi";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import {  useLoginMutation } from "../../Redux/features/auth/authApi";
 import { setUser, useCurrentToken } from "../../Redux/features/auth/authSlice";
 import { verifyToken } from "../../utilities/verifyToken";
 import { useDispatch } from "react-redux";
@@ -67,6 +66,7 @@ const Login = () => {
        
        
           const res = await login({email,password}).unwrap();
+          
           console.log(res);
           if(res.status === "failed" ){
             setError(res.message);
@@ -74,11 +74,13 @@ const Login = () => {
             
           }
           else{
+           
        
             const user = verifyToken(res.token.split(' ')[1])
             console.log(user);
             const toastId = toast.loading('Logging in');
             dispatch(setUser({ user: user, token: res.token.split(' ')[1] }));
+            localStorage.setItem("token", res.token.split(' ')[1]);
             toast.success('Logged in', { id: toastId, duration: 2000 });
             navigate(`/`);
 

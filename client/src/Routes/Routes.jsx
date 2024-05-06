@@ -17,6 +17,9 @@ import AssignManagerToSts from "../pages/AssignManagerToSts/AssignManagerToSts.j
 import PrivateRoute from "./PrivateRoute/PrivateRoute.jsx";
 import AssignVehicleToSts from "../pages/AssignVehicleToSts/AssignVehicleToSts.jsx";
 import CreateLandfill from "../pages/CreateLandfill/CreateLandfill.jsx";
+import AssignLandfillManager from "../pages/AssignLandfillManager/AssignLandfillManager.jsx";
+import AddEntryOfTruck from "../pages/AddEntryOfTruck/AddEntryOfTruck.jsx";
+import AddEntryOfVehicle from "../pages/AddEntryOfVehicle/AddEntryOfVehicle.jsx";
 // import AssignManagerToSts from "../pages/AssignManagerToSts/AssignManagerToSts.jsx";
 
 const router = createBrowserRouter([
@@ -48,7 +51,8 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/users",
+        // path: "/users",
+        index:true,
         element: <AllUsers> </AllUsers>,
       },
       {
@@ -95,6 +99,18 @@ const router = createBrowserRouter([
       {
         path: "/users/landfill/create",
         element: <CreateLandfill></CreateLandfill> ,
+      },
+      {
+        path: "/users/landfill_manager/assign",
+        element: <AssignLandfillManager></AssignLandfillManager> ,
+      },
+      {
+        path: "/users/add-entry-of-truck",
+        element: <AddEntryOfTruck></AddEntryOfTruck>  ,
+      },
+      {
+        path: "/users/add-entry-of-vehicle",
+        element: <AddEntryOfVehicle></AddEntryOfVehicle>  ,
       },
     ],
   },

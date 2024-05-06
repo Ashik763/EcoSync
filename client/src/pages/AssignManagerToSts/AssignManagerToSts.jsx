@@ -1,5 +1,10 @@
+import { useSelector } from "react-redux";
+import { useCurrentToken } from "../../Redux/features/auth/authSlice";
+
 const AssignManagerToSts = () => {
   // const [error, setError] = useState("");
+  const token = useSelector(useCurrentToken);
+  console.log(token);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,8 +25,8 @@ const AssignManagerToSts = () => {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        authorization: `${localStorage.getItem("token")}`,
-      },
+        authorization: `${token}`,
+      },  
       body: JSON.stringify(body),
     })
       .then((res) => res.json())

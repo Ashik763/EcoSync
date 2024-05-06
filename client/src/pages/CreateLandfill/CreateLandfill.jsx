@@ -1,58 +1,61 @@
-const CreateLandfill = () => {
+import { useCreateLandfillMutation } from "../../Redux/features/allUsers/allUsersApi";
 
-    const handleSubmit = (event) => {
+
+const CreateLandfill = () => {
+    const [createLandfill] = useCreateLandfillMutation();
+  
+
+    const handleSubmit = async(event) => {
         event.preventDefault();
     
         const form = event.target;
-    
-        // const ward_number = form.ward_number.value;
-        // const capacity = form.capacity.value;
-    
+        const landfill_id = form.landfill_id.value;
+        const name = form.name.value;
         const x = form.x.value;
         const y = form.y.value;
         const from = form.from.value;
         const to = form.to.value;
-        console.log(to-from)
+        
     
-        const body = {
-          from,
-          to,
-          coordinates: {
-            x,
-            y,
-          },
-        };
+       
         var startTime = new Date("1970-01-01T" + from + ":00");
         var endTime = new Date("1970-01-01T" + to + ":00");
+        const operationalTime = {
+            current_date: new Date(),
+            from: startTime,
+            to: endTime,
+        }
 
-        var timeDiff = endTime - startTime;
+        const body = { 
+            landfill_id,
+            name,
+            operational_time:operationalTime, 
+            capacity: 100,
+            coordinates: {
+              x,
+              y,
+            },
+          };
+          console.log(body);
 
-        console.log(timeDiff);
+          const res  = await createLandfill(body).unwrap();
+          console.log(res);
+          if(res.success){
+            alert("Landfill successfully created");
+          }
+          else{
+            alert("Failed to create landfill");
+          }
 
-        // new Date("1970-01-01T" + startTimeInput + ":00")
-    
-        // const url = "http://localhost:5000/sts/create";
-        // fetch(url, {
-        //   method: "POST",
-        //   headers: {
-        //     "content-type": "application/json",
-        //     authorization: `${localStorage.getItem("token")}`,
-        //   },
-        //   body: JSON.stringify(body),
-        // })
-        //   .then((res) => res.json())
-        //   .then((res) => {
-        //     console.log(res);
-        //     if (res.success) {
-        //       form.reset();
-        //       alert("Successfully created");
-        //     } else {
-        //       alert("Something went wrong");
-        //     }
-        //   })
-        //   .catch(() => {
-        //     alert("Something went wrong");
-        //   });
+
+         
+
+        
+
+        
+
+
+      
       };
     return (
         <div className="m-5  login-container d-flex align-items-center">
@@ -62,8 +65,33 @@ const CreateLandfill = () => {
               <h2 className="text-center text-2xl"> Create Landfill </h2>
         
             </div>
+
+            <div className="mb-3">
+
+            <label htmlFor="landfill_id" className="form-label">
+              Landfill ID: 
+            </label>
+            <input
+              type="Number"
+              name="landfill_id"
+              className="form-control border w-full h-8"
+              aria-describedby="emailHelp"
+              required
+            />
+          </div>
   
             <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              className="form-control border w-full h-8"
+              aria-describedby="emailHelp"
+              id="name"
+              required
+            />
             <br />
             <br />
             <label htmlFor="capacity" className="form-label">

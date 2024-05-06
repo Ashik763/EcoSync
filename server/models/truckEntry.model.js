@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
-const vehicleEntrySchema = mongoose.Schema({
-  sts_id: {
+const truckEntrySchema = mongoose.Schema({
+  landfill_id: {
     // ward_no.
     type: Number,
     required: true,
   },
   vehicle_number: {
     type: Number,
-    // unique: true,
+    unique: true,
     required: true,
   },
 
-  volume_of_waste: {
+  weight_of_waste: {
     type: Number,
     required: true,
   },
@@ -26,6 +26,6 @@ const vehicleEntrySchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("vehicleEntry", vehicleEntrySchema);
+module.exports = mongoose.model("truckEntry", truckEntrySchema);
 
 // any:{} could be use in the mongoose schema

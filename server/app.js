@@ -19,6 +19,7 @@ const Vehicle = require("./models/vehicle.model");
 const Sts = require("./models/sts.model");
 const vehicleEntry = require("./models/vehicleEntry.model");
 const DumpingTruckEntry = require("./models/dumpingTruckEntry.model");
+const Landfill = require("./models/landfill.model");
 
 // middlewares
 const verifyStsManager = require("./middlewares/verifyStsManager");
@@ -393,18 +394,6 @@ app.delete("/users/:userId", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-// get all the roles (problem ache)
-// app.get("/all/users/roles", async (req, res) => {
-//   console.log("Clicked");
-
-//   try {
-//     const result = await Role.find({});
-//     // const result = await roleModel
-//     res.status(200).json({ success: true, roles: result });
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// });
 
 // update role of a user
 app.put("/users/:userId/roles", verifyJWT, verifyAdmin, async (req, res) => {
@@ -474,7 +463,9 @@ app.post("/sts/create", verifyJWT, verifyAdmin, async (req, res) => {
 });
 
 // assigning sts manager to a specific sts
-app.put("/sts/assign-manager", verifyJWT, verifyAdmin, async (req, res) => {
+app.put("/sts/assign-manager",
+ verifyJWT,
+  verifyAdmin, async (req, res) => {
   try {
     const { email, ward_number } = req.body;
     const user = await User.findOneAndUpdate(
@@ -508,11 +499,15 @@ app.put("/sts/assign-manager", verifyJWT, verifyAdmin, async (req, res) => {
 
 // Entry of vehicle with STS ID, vehicle number, volume of waste, time of arrival and time of departure
 
-app.post("/vehicle/entry", verifyJWT, verifyStsManager, async (req, res) => {
+app.post("/vehicle/entry",
+//  verifyJWT,
+  // verifyStsManager,
+   async (req, res) => {
   try {
-    // console.log(req.body);
+
     const result = await vehicleEntry.create(req.body);
-    res.status(201).send(result);
+  
+    res.status(201).send({success:true,result});
   } catch (err) {
     res.status(400).send(err);
   }
@@ -539,18 +534,117 @@ app.put("/assign/vehicle", verifyJWT, verifyAdmin, async (req, res) => {
 
 app.post(
   "/dumping-truck/entry",
-  verifyJWT,
-  verifyLandfillManager,
+  // verifyJWT,
+  // verifyLandfillManager,
   async (req, res) => {
     try {
       // console.log(req.body);
       const result = await DumpingTruckEntry.create(req.body);
-      res.status(201).send(result);
+      res.status(201).send({success:true,result});
     } catch (err) {
       res.status(400).send(err);
     }
   }
 );
+// app.post(
+//   "/dumping-truck/entry",
+//   // verifyJWT,
+//   // verifyLandfillManager,
+//   async (req, res) => {
+//     try {
+//       // console.log(req.body);
+//       const result = await DumpingTruckEntry.create(req.body);
+//       res.status(201).send({success:true,result});
+//     } catch (err) {
+//       res.status(400).send(err);
+//     }
+//   }
+// );
+
+
+// Create landfill
+app.post(
+  "/create/landfill",
+  verifyJWT,
+  verifyAdmin,
+  async (req, res) => {
+    try {
+      // console.log(req.body);
+      const result = await Landfill.create(req.body);
+      res.status(201).send({success:true,
+      result});
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
+);
+
+
+app.put("/landfill_manager/assign", async (req, res) => {
+  try {
+    const { email, landfill_id } = req.body;
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          role: "landfill_manager",
+        },
+      }
+    );
+    if (!user) {
+      return res.status(201).send({
+        success:false,
+        err
+      });
+    }
+    const result = await Landfill.updateOne(
+      { landfill_id },
+      {
+        $addToSet: {
+          userId: user._id,
+        },
+        // userId: user._id,
+      },
+      { upsert: true }
+    );
+    // console.log(user);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    console.log("bad req");
+    res.status(400).send(err);
+  }
+});
+
+
+// get the role details like where role is assigned
+app.get("/users/role-details/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+   console.log(userId);
+    // const result = await User.findOne({ _id: id }).select({ profile: 1 });
+    const result =await Landfill.findOne({ userId: { $elemMatch: { $eq: (userId) } } });
+    console.log(result);
+    res.status(200).json({ success:true,result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+app.get("/sts-manager/role-details/:userId", async (req, res) => {
+  // console.log("ashcilam")
+  try {
+    const userId = req.params.userId;
+  //  console.log(userId);
+    // const result = await User.findOne({ _id: id }).select({ profile: 1 });
+    const result =await Sts.findOne({ userId: { $elemMatch: { $eq: (userId) } } });
+    console.log(result);
+    res.status(200).json({ success:true,result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+
 
 // Automatic billing
 

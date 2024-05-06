@@ -3,6 +3,12 @@ import { NavLink, Outlet } from "react-router-dom";
 // import { AuthContext } from "../contexts/AuthProvider";
 import Nav from "../pages/Shared/Navbar/Nav";
 import { AuthContext } from "../Context/AuthProvider";
+import { useCurrentToken } from "../Redux/features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { verifyToken } from "../utilities/verifyToken";
+import AdminSidebar from "../Sidebars/AdminSidebar";
+import LandfillManagerSidebar from "../Sidebars/LandfillManagerSidebar";
+import StsManagerSidebar from "../Sidebars/StsManagerSidebar";
 // import useAdmin from "../hooks/useAdmin";
 // import Navbar from "../Pages/Shared/Navbar/Navbar";
 // import useDoctor from "../hooks/useDoctor";
@@ -10,15 +16,20 @@ import { AuthContext } from "../Context/AuthProvider";
 const DashboardLayout = () => {
   // const { user } = useContext(AuthContext);
 
+  const token = useSelector(useCurrentToken) ;
+  const {role} = verifyToken(token);
+  // console.log(user);
+
 
   // console.log(user);
   return (
     <div>
       {/* <Navbar></Navbar> */}
+      
       <Nav></Nav>
       <div className="w-11/12 mx-auto border">
         <div className="flex md:flex-row flex-col min-h-full   ">
-          <div
+        {(role==="system_admin") && <div
             style={{ minWidth: "250px", minHeight: "60vh" }}
             className="basis-1/4 border p-8 md:w-1/4  "
           >
@@ -137,8 +148,29 @@ const DashboardLayout = () => {
 
 
 
+            <div
+              style={{ borderBottom: "1px solid black" }}
+              className="mb-2 flex flex-row  "
+            >
+              <NavLink
+                to="/users/landfill_manager/assign"
+                className={({ isActive }) =>
+                  isActive ? " font-bold " : " topic-name text-decoration-none"
+                }
+              >
+                Assign Landfill Manager
+              </NavLink>
+            </div>
 
-          </div>
+
+
+
+          </div>}
+
+          { role === "landfill_manager" &&  <LandfillManagerSidebar></LandfillManagerSidebar> }
+
+
+          { role === "sts_manager" &&  <StsManagerSidebar></StsManagerSidebar> }
           <div className="basis-3/4">
             <Outlet className=" w-100 md:w-3/4"></Outlet>
           </div>

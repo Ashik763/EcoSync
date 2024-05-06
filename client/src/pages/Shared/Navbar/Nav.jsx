@@ -108,7 +108,7 @@ const Nav = () => {
                     Change Password
                   </NavLink>{" "}
                 </li>
-                <li>
+               {user?.role ==="system_admin" && <li>
                   {" "}
                   <NavLink
                     className={({ isActive }) =>
@@ -120,7 +120,52 @@ const Nav = () => {
                   >
                     Dashboard
                   </NavLink>{" "}
+                </li>}
+               {/* {user?.role ==="system_admin" && <li>
+                  {" "}
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? " active topic-name text-decoration-none"
+                        : " topic-name text-decoration-none"
+                    }
+                    to="/users"
+                  >
+                    Dashboard
+                  </NavLink>{" "}
+                </li>} */}
+               {
+               user?.role === "landfill_manager" && <li>
+                  {" "}
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? " active topic-name text-decoration-none"
+                        : " topic-name text-decoration-none"
+                    }
+                    to="/users/add-entry-of-truck"
+                  >
+                    Dashboard
+                  </NavLink>{" "}
                 </li>
+                }
+
+
+                {
+                user?.role === "sts_manager" && <li>
+                  {" "}
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? " active topic-name text-decoration-none"
+                        : " topic-name text-decoration-none"
+                    }
+                    to="/users/add-entry-of-vehicle"
+                  >
+                    Dashboard
+                  </NavLink>{" "}
+                </li>
+                }
               </>
             ) : (
               ""

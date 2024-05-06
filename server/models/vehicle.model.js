@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const vehicleSchema = mongoose.Schema({
   vehicle_number: {
-    type: String,
+    type: Number,
     // unique: true,
     required: true,
   },
@@ -13,23 +13,19 @@ const vehicleSchema = mongoose.Schema({
     required: true,
   },
   capacity: {
-    type: String,
+    type: Number,
     // enum: ["3", "5", "7", "15"],
     required: true,
   },
   loaded_fuel_cost_per_kilometer: {
-    type: String,
+    type: Number,
     required: true,
   },
 
   unloaded_fuel_cost_per_kilometer: {
-    type: String,
+    type: Number,
     required: true,
-  },
-  // ward_number: {
-  //   type: [],
-  //   required: true,
-  // },
+  }
   
 });
 
