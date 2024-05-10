@@ -20,6 +20,9 @@ import CreateLandfill from "../pages/CreateLandfill/CreateLandfill.jsx";
 import AssignLandfillManager from "../pages/AssignLandfillManager/AssignLandfillManager.jsx";
 import AddEntryOfTruck from "../pages/AddEntryOfTruck/AddEntryOfTruck.jsx";
 import AddEntryOfVehicle from "../pages/AddEntryOfVehicle/AddEntryOfVehicle.jsx";
+import CreateBill from "../pages/CreateBill/CreateBill.jsx";
+import AllBills from "../pages/AllBills/AllBills.jsx";
+import RegisterContractorCompany from "../pages/RegisterContractorCompany/RegisterContractorCompany.jsx";
 // import AssignManagerToSts from "../pages/AssignManagerToSts/AssignManagerToSts.jsx";
 
 const router = createBrowserRouter([
@@ -111,6 +114,18 @@ const router = createBrowserRouter([
       {
         path: "/users/add-entry-of-vehicle",
         element: <AddEntryOfVehicle></AddEntryOfVehicle>  ,
+      },
+      {
+        path: "/users/create-a-bill",
+        element: <CreateBill></CreateBill>  ,
+      },
+      {
+        path: "/users/all-bills",
+        element: <AllBills></AllBills> ,
+      },
+      {
+        path: "/users/third-party/register",
+        element: <RegisterContractorCompany></RegisterContractorCompany> ,
       },
     ],
   },

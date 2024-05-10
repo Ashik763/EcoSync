@@ -20,13 +20,20 @@ const Sts = require("./models/sts.model");
 const vehicleEntry = require("./models/vehicleEntry.model");
 const DumpingTruckEntry = require("./models/dumpingTruckEntry.model");
 const Landfill = require("./models/landfill.model");
+const Coordinate = require("./models/coordinates.model");
+const Edge = require("./models/edge.model");
+const Billing = require("./models/billing.model");
+const ContractorCompany = require("./models/contractorCompany.model");
+const ContractorManager = require("./models/contractorManager.model");
+const WorkForce = require("./models/workForce.model");
+const Wastage = require("./models/addEntryOfWasteToSts.model");
 
 // middlewares
 const verifyStsManager = require("./middlewares/verifyStsManager");
 const verifyLandfillManager = require("./middlewares/verifyLandfillManager");
 const verifyAdmin = require("./middlewares/verifyAdmin");
 const verifyAdminOrOwn = require("./middlewares/verifyAdminOrOwn");
-const { parse } = require("dotenv");
+// const { parse } = require("dotenv");
 
 
 
@@ -546,20 +553,6 @@ app.post(
     }
   }
 );
-// app.post(
-//   "/dumping-truck/entry",
-//   // verifyJWT,
-//   // verifyLandfillManager,
-//   async (req, res) => {
-//     try {
-//       // console.log(req.body);
-//       const result = await DumpingTruckEntry.create(req.body);
-//       res.status(201).send({success:true,result});
-//     } catch (err) {
-//       res.status(400).send(err);
-//     }
-//   }
-// );
 
 
 // Create landfill
@@ -638,6 +631,165 @@ app.get("/sts-manager/role-details/:userId", async (req, res) => {
     const result =await Sts.findOne({ userId: { $elemMatch: { $eq: (userId) } } });
     console.log(result);
     res.status(200).json({ success:true,result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+
+app.get('/get-sts-info/:vehicleNumber',async (req,res) => {
+  try{
+    
+    const vehicleNumber = req.params.vehicleNumber;
+    console.log(typeof(vehicleNumber) );
+      console.log("clicked");
+      const stsInfo = await Sts.find({}).select({__v:0,_id:0});
+      // const stsInfo = await Sts.findOne({ vehicle_number: { $elemMatch: { $eq: parseInt(vehicleNumber) } } }).select({__v:0,_id:0});
+      console.log(stsInfo);
+      console.log("Cliecked2");
+      if(stsInfo){
+        const vehicleInfo = await Vehicle.findOne({ vehicle_number: parseInt(vehicleNumber)}).select({__v:0,_id:0});
+        res.status(200).send({success:true,result:{stsInfo:stsInfo,vehicleInfo}});
+      }
+      else{
+        res.status(200).send({success:false,stsInfo:null,vehicleInfo:null});
+      }
+  }
+  catch(err){
+    res.status(400).send(err);
+  }
+    
+
+})
+app.get('/coordinates-and-edges/',async (req,res) => {
+  try{
+    
+      // const id = req.params.id;
+      const coordinates = await Coordinate.find({}).select({__v:0,_id:0});
+      // const stsInfo = await Sts.findOne({ vehicle_number: { $elemMatch: { $eq: parseInt(vehicleNumber) } } }).select({__v:0,_id:0});
+      // console.log(stsInfo);
+      console.log("Cliecked2");
+      if(coordinates){
+        const edges = await Edge.find({});
+        // const landfill = await Landfill.find();
+        res.status(200).send({success:true,coordinates,edges});
+      }
+      else{
+        res.status(200).send({success:false,coordinates:null,edges:null});
+      }
+  }
+  catch(err){
+    res.status(400).send(err);
+  }
+    
+
+})
+
+
+
+// create billing
+
+
+app.post("/bill/entry", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const result = await Billing.create(req.body);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+app.get("/all-bills", async (req, res) => {
+  // console.log("ashcilam")
+  try {
+    const userId = req.params.userId;
+  //  console.log(userId);
+    // const result = await User.findOne({ _id: id }).select({ profile: 1 });
+    const result =await Billing.find({}).sort({createdAt:-1});
+    console.log(result);
+    res.status(200).json({ success:true,result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+
+// Create Contractor Company 
+app.post("/create/contractorComapany", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const {
+      companyName,
+      contractID,
+      registrationID,
+      registrationDate,
+      TIN,
+      contactNumber,
+      workforceSize,
+      paymentPerTonnage,
+      requiredAmountPerDay,
+      contractDuration,
+      areaOfCollection,
+      designatedSTS
+    } = req.body;
+    const temp = {
+      companyName,
+      contractID,
+      registrationID,
+      registrationDate,
+      TIN,
+      contactNumber,
+      workforceSize:parseInt(workforceSize),
+      paymentPerTonnage:parseInt(paymentPerTonnage),
+      requiredAmountPerDay:parseInt(requiredAmountPerDay),
+      contractDuration:parseInt(contractDuration),
+      areaOfCollection:parseInt(areaOfCollection),
+      designatedSTS:parseInt(designatedSTS)
+    }
+    console.log(temp);
+    
+    const result = await ContractorCompany.create(temp);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+
+
+// Create a Contractor Manager
+app.post("/create/contractorManager", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const result = await ContractorManager.create(req.body);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+// Workforce registration 
+app.post("/create/workForce", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const result = await WorkForce.create(req.body);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+app.post("/create/workForce", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const result = await WorkForce.create(req.body);
+    res.status(201).send({ success: true, result });
   } catch (err) {
     res.status(400).send(err);
   }

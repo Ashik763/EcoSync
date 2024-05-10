@@ -162,6 +162,22 @@ const DashboardLayout = () => {
               </NavLink>
             </div>
 
+                {/*  Working on final portion */}
+
+            <div
+              style={{ borderBottom: "1px solid black" }}
+              className="mb-2 flex flex-row  "
+            >
+              <NavLink
+                to="/users/third-party/register"
+                className={({ isActive }) =>
+                  isActive ? " font-bold " : " topic-name text-decoration-none"
+                }
+              >
+                Register Contractor Company
+              </NavLink>
+            </div>
+
 
 
 
