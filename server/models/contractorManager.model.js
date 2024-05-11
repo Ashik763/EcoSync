@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 const ContractorManagerSchema =  mongoose.Schema({
-    fullName: {
+    name: {
         type: String,
         required: true
     },
@@ -11,7 +11,12 @@ const ContractorManagerSchema =  mongoose.Schema({
         required: true,
         unique: true
     },
-    emailAddress: {
+    role:{
+        type: String,
+        default: "unassigned",
+
+    },
+    email: {
         type: String,
         required: true,
         unique: true
@@ -26,15 +31,10 @@ const ContractorManagerSchema =  mongoose.Schema({
         required: true
     },
     assignedContractorCompany: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'contractor_company',
+        type: Number,
         required: true
     },
-    accessLevel: {
-        type: String,
-        enum: ['contractor', 'user'],
-        default: 'user'
-    },
+  
     username: {
         type: String,
         required: true,

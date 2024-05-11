@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   role: {
     type: String,
-    enum: ["system_admin", "sts_manager", "landfill_manager", "unassigned"],
+   
 
     default: "unassigned",
   },

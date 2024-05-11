@@ -120,7 +120,8 @@ const Nav = () => {
                     Dashboard
                   </NavLink>{" "}
                 </li>}
-               {/* {user?.role ==="system_admin" && <li>
+                {
+                user?.role === "contractor" && <li>
                   {" "}
                   <NavLink
                     className={({ isActive }) =>
@@ -128,11 +129,12 @@ const Nav = () => {
                         ? " active topic-name text-decoration-none"
                         : " topic-name text-decoration-none"
                     }
-                    to="/users"
+                    to="/users/assign/workforce"
                   >
                     Dashboard
                   </NavLink>{" "}
-                </li>} */}
+                </li>
+                }
                {
                user?.role === "landfill_manager" && <li>
                   {" "}
@@ -165,6 +167,8 @@ const Nav = () => {
                   </NavLink>{" "}
                 </li>
                 }
+
+
               </>
             ) : (
               ""

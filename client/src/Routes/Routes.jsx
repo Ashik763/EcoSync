@@ -23,6 +23,10 @@ import AddEntryOfVehicle from "../pages/AddEntryOfVehicle/AddEntryOfVehicle.jsx"
 import CreateBill from "../pages/CreateBill/CreateBill.jsx";
 import AllBills from "../pages/AllBills/AllBills.jsx";
 import RegisterContractorCompany from "../pages/RegisterContractorCompany/RegisterContractorCompany.jsx";
+import AssignContractorManager from "../pages/AssignContractorManager/AssignContractorManager.jsx";
+import AssignWorkForce from "../pages/AssignWorkForce/AssignWorkForce.jsx";
+import MonitoringTransportedWasteByContractors from "../pages/MonitoringTransportedWasteByContractors/MonitoringTransportedWasteByContractors.jsx";
+import BillGeneration from "../pages/BillGeneration/BillGeneration.jsx";
 // import AssignManagerToSts from "../pages/AssignManagerToSts/AssignManagerToSts.jsx";
 
 const router = createBrowserRouter([
@@ -127,6 +131,22 @@ const router = createBrowserRouter([
         path: "/users/third-party/register",
         element: <RegisterContractorCompany></RegisterContractorCompany> ,
       },
+      {
+        path: "/users/assign/contractor-manager",
+        element:  <AssignContractorManager></AssignContractorManager>
+      },
+      {
+        path: "/users/assign/workforce",
+        element:  <AssignWorkForce></AssignWorkForce>
+      },
+      {
+        path: "/users/monitoring-transported-waste-by-contractors",
+        element:  <MonitoringTransportedWasteByContractors></MonitoringTransportedWasteByContractors>
+      },
+      {
+        path: "/users/bill-generation",
+        element: <BillGeneration></BillGeneration>
+      }
     ],
   },
 ]);

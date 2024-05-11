@@ -28,6 +28,32 @@ const StsManagerSidebar = () => {
            Add Entry of Vehicle 
           </NavLink>
         </div>
+        <div
+          style={{ borderBottom: "1px solid black" }}
+          className="mb-2 flex flex-row  "
+        >
+          <NavLink
+            to="/users/monitoring-transported-waste-by-contractors"
+            className={({ isActive }) =>
+              isActive ? " font-bold " : " topic-name text-decoration-none"
+            }
+          >
+           Monitoring Transported Waste by Contractors 
+          </NavLink>
+        </div>
+        <div
+          style={{ borderBottom: "1px solid black" }}
+          className="mb-2 flex flex-row  "
+        >
+          <NavLink
+            to="/users/bill-generation"
+            className={({ isActive }) =>
+              isActive ? " font-bold " : " topic-name text-decoration-none"
+            }
+          >
+           Bill Generation 
+          </NavLink>
+        </div>
 
      
 

@@ -15,6 +15,7 @@ import { toast } from "sonner";
 
 const Login = () => {
   const [login] = useLoginMutation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token =  dispatch(useCurrentToken);
@@ -66,7 +67,7 @@ const Login = () => {
        
        
           const res = await login({email,password}).unwrap();
-          
+          // setLoading(true);
           console.log(res);
           if(res.status === "failed" ){
             setError(res.message);
@@ -78,10 +79,11 @@ const Login = () => {
        
             const user = verifyToken(res.token.split(' ')[1])
             console.log(user);
-            const toastId = toast.loading('Logging in');
+            const toastId = toast.loading('Logging in',{duration: 2000});
             dispatch(setUser({ user: user, token: res.token.split(' ')[1] }));
             localStorage.setItem("token", res.token.split(' ')[1]);
             toast.success('Logged in', { id: toastId, duration: 2000 });
+            // setLoading(false);
             navigate(`/`);
 
           }

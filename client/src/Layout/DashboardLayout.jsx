@@ -9,6 +9,7 @@ import { verifyToken } from "../utilities/verifyToken";
 import AdminSidebar from "../Sidebars/AdminSidebar";
 import LandfillManagerSidebar from "../Sidebars/LandfillManagerSidebar";
 import StsManagerSidebar from "../Sidebars/StsManagerSidebar";
+import ContractorSidebar from "../Sidebars/ContractorSidebar";
 // import useAdmin from "../hooks/useAdmin";
 // import Navbar from "../Pages/Shared/Navbar/Navbar";
 // import useDoctor from "../hooks/useDoctor";
@@ -177,6 +178,19 @@ const DashboardLayout = () => {
                 Register Contractor Company
               </NavLink>
             </div>
+            <div
+              style={{ borderBottom: "1px solid black" }}
+              className="mb-2 flex flex-row  "
+            >
+              <NavLink
+                to="/users/assign/contractor-manager"
+                className={({ isActive }) =>
+                  isActive ? " font-bold " : " topic-name text-decoration-none"
+                }
+              >
+                Assign Contractor Manager User 
+              </NavLink>
+            </div>
 
 
 
@@ -187,6 +201,7 @@ const DashboardLayout = () => {
 
 
           { role === "sts_manager" &&  <StsManagerSidebar></StsManagerSidebar> }
+          { role === "contractor" &&  <ContractorSidebar></ContractorSidebar> }
           <div className="basis-3/4">
             <Outlet className=" w-100 md:w-3/4"></Outlet>
           </div>

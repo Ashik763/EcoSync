@@ -12,7 +12,7 @@ require("dotenv").config();
 // });
 
 // models
-const Coords = require("./models");
+// const Coords = require("./models");
 const Role = require("./models/role.model");
 const User = require("./models/user.model");
 const Vehicle = require("./models/vehicle.model");
@@ -26,8 +26,10 @@ const Billing = require("./models/billing.model");
 const ContractorCompany = require("./models/contractorCompany.model");
 const ContractorManager = require("./models/contractorManager.model");
 const WorkForce = require("./models/workForce.model");
-const Wastage = require("./models/addEntryOfWasteToSts.model");
+const BillingBySts = require("./models/billingBySts.model");
 
+const Wastage = require("./models/addEntryOfWasteToSts.model");
+const MonitoringWaste = require("./models/monitoringWaste.model");
 // middlewares
 const verifyStsManager = require("./middlewares/verifyStsManager");
 const verifyLandfillManager = require("./middlewares/verifyLandfillManager");
@@ -124,10 +126,35 @@ const errorMessage = {
   success: false,
   message: "Something went wrong",
 };
-app.post("/auth/login", (req, res) => {
+app.post("/auth/login", async(req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   console.log("body", req.body);
+  const checkContructorManager = await ContractorManager.findOne({ email , role: { $ne : "unassigned"},password });
+  if(checkContructorManager){
+    const payload = {
+      name: checkContructorManager.name,
+      email: checkContructorManager.email,
+      role: checkContructorManager.role,
+      id: checkContructorManager._id,
+    }; // Create JWT Payload
+ 
+    // Sign Token
+    jwt.sign(payload, "secret", { expiresIn: 36000 }, (err, token) => {
+      res.cookie('token', token, {
+        secure: false,
+        httpOnly: true,
+        sameSite: 'none',
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+      });
+       res.json({
+        success: true,
+        token: "Bearer " + token,
+      });
+    });
+    return;
+    
+  }
 
   // Find user by email
   User.findOne({ email , role: { $ne : "unassigned"} }).then((user) => {
@@ -762,7 +789,7 @@ app.post("/create/contractorComapany", async (req, res) => {
 
 
 // Create a Contractor Manager
-app.post("/create/contractorManager", async (req, res) => {
+app.post("/assign/contractor-manager", async (req, res) => {
   try {
     // console.log(req.body);
     const result = await ContractorManager.create(req.body);
@@ -774,7 +801,7 @@ app.post("/create/contractorManager", async (req, res) => {
 
 
 // Workforce registration 
-app.post("/create/workForce", async (req, res) => {
+app.post("/assign/work-force", async (req, res) => {
   try {
     // console.log(req.body);
     const result = await WorkForce.create(req.body);
@@ -789,6 +816,28 @@ app.post("/create/workForce", async (req, res) => {
   try {
     // console.log(req.body);
     const result = await WorkForce.create(req.body);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+app.post("/monitoring-transported-waste-by-contractors", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const result = await MonitoringWaste.create(req.body);
+    res.status(201).send({ success: true, result });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+app.post("/bill-by-sts", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const result = await BillingBySts.create(req.body);
     res.status(201).send({ success: true, result });
   } catch (err) {
     res.status(400).send(err);
